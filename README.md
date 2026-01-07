@@ -1,127 +1,153 @@
-# Deep Neural Network from Scratch on MNIST
+**MILESTONE 1 - Project Infrastructure , installing essential tools and trained model from scratch**
 
-This project implements a **Deep Neural Network (DNN) from scratch using NumPy** to classify handwritten digits from the **MNIST dataset**.  
-The objective is to study the impact of **learning rate, epochs, and model capacity** on training and validation performance.
+
+# 🧠 Deep Neural Network from Scratch on MNIST
+
+This project implements a **Deep Neural Network (DNN) from scratch** using **NumPy** to classify handwritten digits from the MNIST dataset.  
+The objective is to study the impact of **learning rate**, **epochs**, and **model capacity** on training and validation performance.
 
 ---
 
 ## 📌 Project Overview
 
-- Dataset: MNIST (Handwritten digits 0–9)
-- Implementation: Pure NumPy (no deep learning frameworks for training)
-- Architecture: Fully Connected Neural Network
-- Evaluation Metrics: Accuracy and Loss
-- Visualization: Training vs Validation Accuracy and Loss plots
+- **Dataset:** MNIST (Handwritten digits 0–9)  
+- **Implementation:** Pure NumPy (no deep learning frameworks for training)  
+- **Architecture:** Fully Connected Neural Network  
+- **Evaluation Metrics:** Accuracy and Loss  
+- **Visualization:** Training vs Validation Accuracy and Loss plots  
 
 ---
 
 ## 📊 Dataset Details
 
-- Training samples: 60,000  
-- Validation samples: 10,000  
-- Input size: 784 (28×28 images flattened)  
-- Output classes: 10  
+- **Training samples:** 60,000  
+- **Validation samples:** 10,000  
+- **Input size:** 784 (28×28 images flattened)  
+- **Output classes:** 10  
 
 ### Preprocessing Steps
-- Pixel normalization to range [0, 1]
-- Labels converted to one-hot encoded format
+
+- Pixel normalization to range `[0, 1]`  
+- Labels converted to **one-hot encoded** format  
 
 ---
 
 ## 🧠 Model Architecture
 
-Input Layer : 784 neurons
-Hidden Layer 1: 128 neurons (Sigmoid)
-Hidden Layer 2: 64 neurons (Sigmoid)
-Output Layer : 10 neurons (Softmax)
+| Layer               | Neurons | Activation |
+| ------------------ | ------- | ---------- |
+| Input Layer         | 784     | -          |
+| Hidden Layer 1      | 128     | Sigmoid    |
+| Hidden Layer 2      | 64      | Sigmoid    |
+| Output Layer        | 10      | Softmax    |
 
-
-- Weight initialization uses scaled random values
-- Softmax is applied at the output layer for multi-class classification
+- **Weight initialization:** Scaled random values  
+- **Output:** Softmax for multi-class classification  
 
 ---
 
 ## ⚙️ Implemented Features
 
-- Forward propagation (Sigmoid & Softmax)
-- Backpropagation from scratch
-- Binary Cross-Entropy loss
-- Stochastic Gradient Descent (SGD)
-- Accuracy and loss tracking
-- Performance visualization using Matplotlib
+- Forward propagation (Sigmoid & Softmax)  
+- Backpropagation from scratch  
+- Binary Cross-Entropy loss  
+- Stochastic Gradient Descent (SGD)  
+- Accuracy and loss tracking  
+- Performance visualization using Matplotlib  
 
 ---
 
 ## 🚀 Experiments & Analysis
 
 ### 🔹 Experiment 1
+
 **Configuration**
-- Architecture: `[784, 128, 64, 10]`
-- Epochs: `15`
-- Learning Rate: `1.0`
+
+- Architecture: `[784, 128, 64, 10]`  
+- Epochs: 15  
+- Learning Rate: 1.0  
 
 **Observations**
-- Training accuracy reaches nearly 100%
-- Validation accuracy stagnates after epoch 5–6
-- High learning rate causes aggressive weight updates
-- Model memorizes training data
+
+- Training accuracy reaches nearly 100%  
+- Validation accuracy stagnates after epoch 5–6  
+- High learning rate causes aggressive weight updates  
+- Model memorizes training data  
 
 **Conclusion**
-- High learning rate and high capacity lead to **overfitting and poor generalization**
+
+- High learning rate and high capacity lead to **overfitting** and poor generalization  
 
 ---
 
 ### 🔹 Experiment 2
+
 **Configuration**
-- Architecture: `[784, 128, 64, 10]`
-- Epochs: `50`
-- Learning Rate: `0.5`
+
+- Architecture: `[784, 128, 64, 10]`  
+- Epochs: 50  
+- Learning Rate: 0.5  
 
 **Observations**
-- More stable learning than Experiment 1
-- Reduced oscillations in accuracy
-- Small gap between training and validation curves
+
+- More stable learning than Experiment 1  
+- Reduced oscillations in accuracy  
+- Small gap between training and validation curves  
 
 **Conclusion**
-- Improved stability but mild overfitting still exists
+
+- Improved stability but mild overfitting still exists  
 
 ---
 
 ### ⭐ Experiment 3 (Best Model)
+
 **Configuration**
-- Architecture: `[784, 128, 64, 10]`
-- Epochs: `200`
-- Learning Rate: `0.01`
+
+- Architecture: `[784, 128, 64, 10]`  
+- Epochs: 200  
+- Learning Rate: 0.01  
 
 **Observations**
-- Smooth and stable convergence
-- Minimal gap between training and validation accuracy
-- Accuracy improves rapidly until ~50 epochs
-- Converges fully around ~100 epochs
+
+- Smooth and stable convergence  
+- Minimal gap between training and validation accuracy  
+- Accuracy improves rapidly until ~50 epochs  
+- Converges fully around ~100 epochs  
 
 **Final Performance**
-- Training Accuracy: >97%
-- Validation Accuracy: >96%
+
+- Training Accuracy: >97%  
+- Validation Accuracy: >96%  
 
 **Conclusion**
-- Low learning rate with sufficient epochs provides **best generalization**
+
+- Low learning rate with sufficient epochs provides **best generalization**  
 
 ---
 
 ## 📈 Visual Results
 
 The project generates:
-- Training vs Validation Loss Plot
-- Training vs Validation Accuracy Plot
+
+- **Training vs Validation Loss Plot**  
+- **Training vs Validation Accuracy Plot**  
 
 These plots clearly demonstrate:
-- Overfitting at high learning rates
-- Stable convergence at low learning rates
-- Generalization behavior across epochs
+
+- Overfitting at **high learning rates**  
+- Stable convergence at **low learning rates**  
+- Generalization behavior across epochs  
 
 ---
 
 ## 🛠️ How to Run
+
+### Install Dependencies
+
+```bash
+pip install numpy matplotlib scikit-learn tensorflow
+
 
 ```bash
 pip install numpy matplotlib scikit-learn tensorflow
@@ -317,7 +343,7 @@ magnitude = sqrt(Gx² + Gy²)
 This mimics early CNN layers used in real vision models.
 
 
-# Milestone 2: Advanced Web Scraping & Data Processing Pipelines
+** Milestone 2: Advanced Web Scraping & Data Processing Pipelines **
 
 This milestone demonstrates **multiple real-world web scraping approaches** using modern tools and APIs.  
 It focuses on **dynamic scraping, structured API extraction, and intelligent data enrichment**.
@@ -489,7 +515,7 @@ output/books_prices.json
 
 
 🧠 Semantic News-Driven Book Pricing System
-Milestone 3 – NLP, Semantic Similarity & Dynamic Pricing
+**Milestone 3 – NLP, Semantic Similarity & Dynamic Pricing**
 📌 Project Overview
 
 This milestone implements an intelligent book pricing system that dynamically adjusts book prices using:
