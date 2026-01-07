@@ -1,149 +1,99 @@
-**MILESTONE 1 - Project Infrastructure , installing essential tools and trained model from scratch**
+```
+# Deep Learning & Intelligent Web Scraping Projects
 
+This repository contains multiple projects demonstrating **Deep Learning from scratch**, **MNIST prediction**, **CNN convolution demo**, **advanced web scraping**, and **semantic news-driven book pricing**.
 
-# 🧠 Deep Neural Network from Scratch on MNIST
+---
+
+## **MILESTONE 1 – Deep Neural Network (DNN) from Scratch on MNIST**
 
 This project implements a **Deep Neural Network (DNN) from scratch** using **NumPy** to classify handwritten digits from the MNIST dataset.  
-The objective is to study the impact of **learning rate**, **epochs**, and **model capacity** on training and validation performance.
+The goal is to study the impact of **learning rate**, **epochs**, and **model capacity** on training and validation performance.
 
----
+### Project Overview
 
-## 📌 Project Overview
-
-- **Dataset:** MNIST (Handwritten digits 0–9)  
-- **Implementation:** Pure NumPy (no deep learning frameworks for training)  
+- **Dataset:** MNIST (Digits 0–9)  
+- **Implementation:** Pure NumPy  
 - **Architecture:** Fully Connected Neural Network  
-- **Evaluation Metrics:** Accuracy and Loss  
-- **Visualization:** Training vs Validation Accuracy and Loss plots  
+- **Metrics:** Accuracy and Loss  
+- **Visualization:** Training vs Validation Accuracy and Loss  
 
----
-
-## 📊 Dataset Details
+### Dataset Details
 
 - **Training samples:** 60,000  
 - **Validation samples:** 10,000  
 - **Input size:** 784 (28×28 images flattened)  
 - **Output classes:** 10  
 
-### Preprocessing Steps
+#### Preprocessing
 
-- Pixel normalization to range `[0, 1]`  
-- Labels converted to **one-hot encoded** format  
+- Normalize pixels to `[0,1]`  
+- Convert labels to **one-hot encoding**  
 
----
+### Model Architecture
 
-## 🧠 Model Architecture
+| Layer           | Neurons | Activation |
+|----------------|---------|------------|
+| Input Layer     | 784     | -          |
+| Hidden Layer 1  | 128     | Sigmoid    |
+| Hidden Layer 2  | 64      | Sigmoid    |
+| Output Layer    | 10      | Softmax    |
 
-| Layer               | Neurons | Activation |
-| ------------------ | ------- | ---------- |
-| Input Layer         | 784     | -          |
-| Hidden Layer 1      | 128     | Sigmoid    |
-| Hidden Layer 2      | 64      | Sigmoid    |
-| Output Layer        | 10      | Softmax    |
-
-- **Weight initialization:** Scaled random values  
-- **Output:** Softmax for multi-class classification  
-
----
-
-## ⚙️ Implemented Features
+### Implemented Features
 
 - Forward propagation (Sigmoid & Softmax)  
 - Backpropagation from scratch  
 - Binary Cross-Entropy loss  
 - Stochastic Gradient Descent (SGD)  
-- Accuracy and loss tracking  
+- Accuracy & loss tracking  
 - Performance visualization using Matplotlib  
 
----
+### Experiments & Analysis
 
-## 🚀 Experiments & Analysis
+#### Experiment 1
 
-### 🔹 Experiment 1
+- **Architecture:** `[784,128,64,10]`  
+- **Epochs:** 15  
+- **Learning Rate:** 1.0  
 
-**Configuration**
+**Observations:** Training accuracy ~100%, validation stagnates → overfitting.  
 
-- Architecture: `[784, 128, 64, 10]`  
-- Epochs: 15  
-- Learning Rate: 1.0  
+#### Experiment 2
 
-**Observations**
+- **Architecture:** `[784,128,64,10]`  
+- **Epochs:** 50  
+- **Learning Rate:** 0.5  
 
-- Training accuracy reaches nearly 100%  
-- Validation accuracy stagnates after epoch 5–6  
-- High learning rate causes aggressive weight updates  
-- Model memorizes training data  
+**Observations:** More stable learning, small gap between training & validation.  
 
-**Conclusion**
+#### Experiment 3 (Best Model)
 
-- High learning rate and high capacity lead to **overfitting** and poor generalization  
+- **Architecture:** `[784,128,64,10]`  
+- **Epochs:** 200  
+- **Learning Rate:** 0.01  
 
----
+**Observations:** Smooth convergence, minimal gap, training >97%, validation >96%.  
 
-### 🔹 Experiment 2
+### Visual Results
 
-**Configuration**
+- **Training vs Validation Loss**  
+- **Training vs Validation Accuracy**  
 
-- Architecture: `[784, 128, 64, 10]`  
-- Epochs: 50  
-- Learning Rate: 0.5  
-
-**Observations**
-
-- More stable learning than Experiment 1  
-- Reduced oscillations in accuracy  
-- Small gap between training and validation curves  
-
-**Conclusion**
-
-- Improved stability but mild overfitting still exists  
-
----
-
-### ⭐ Experiment 3 (Best Model)
-
-**Configuration**
-
-- Architecture: `[784, 128, 64, 10]`  
-- Epochs: 200  
-- Learning Rate: 0.01  
-
-**Observations**
-
-- Smooth and stable convergence  
-- Minimal gap between training and validation accuracy  
-- Accuracy improves rapidly until ~50 epochs  
-- Converges fully around ~100 epochs  
-
-**Final Performance**
-
-- Training Accuracy: >97%  
-- Validation Accuracy: >96%  
-
-**Conclusion**
-
-- Low learning rate with sufficient epochs provides **best generalization**  
-
----
-
-## 📈 Visual Results
-
-The project generates:
-
-- **Training vs Validation Loss Plot**  
-- **Training vs Validation Accuracy Plot**  
-
-These plots clearly demonstrate:
-
-- Overfitting at **high learning rates**  
-- Stable convergence at **low learning rates**  
+**Demonstrates:**  
+- Overfitting at high learning rates  
+- Stable convergence at low learning rates  
 - Generalization behavior across epochs  
 
----
+### How to Run
 
-## 🛠️ How to Run
+```bash
+pip install numpy matplotlib scikit-learn tensorflow
+python main.py
 
-### Install Dependencies
+```bash
+pip install numpy matplotlib scikit-learn tensorflow
+python main.py
+
 
 ```bash
 pip install numpy matplotlib scikit-learn tensorflow
