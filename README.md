@@ -837,5 +837,149 @@ df["high_demand"] = df["final_demand_score"] >= df["final_demand_score"].quantil
 - Saves **enriched dataset** to CSV:
 
 
+**Milestone 4 - cross platform Integration and Notification Deployment system **
+
+## Project Overview
+This project aims to **analyze e-commerce book pricing in real-time**. It scrapes book data, fetches unique identifiers (UPC & ISBN), retrieves competitor pricing from BooksRun, and recommends adjusted pricing strategies. 
+
+This milestone demonstrates a **data-driven pricing strategy** system that can be used by e-commerce platforms to remain competitive.
+
+---
+
+## Features Implemented
+- **Scrape Book Details:** Fetches title, price, and product URL from [Books to Scrape](https://books.toscrape.com).
+- **Fetch UPC:** Scrapes UPC from the product page.
+- **Fetch ISBN:** Uses Google Books API to match titles and extract ISBN-13 with confidence scoring.
+- **Retrieve Competitor Price:** Fetches minimum new/used price from BooksRun API using ISBN.
+- **Pricing Recommendation:** Calculates suggested price based on competitor price:
+  - Overpriced → reduce by 5%
+  - Underpriced → increase by 5%
+  - Matched → no change
+- **CSV Output:** Saves enriched book data with competitor price, adjusted price, and status.
+- **Robust Error Handling:** Uses retries and timeouts for API requests.
+
+---
+
+## Dependencies
+- `requests` → API calls  
+- `pandas` → Data manipulation and CSV handling  
+- `beautifulsoup4` → HTML parsing  
+- `tqdm` → Progress bars (optional)  
+- `difflib` → Title similarity scoring  
+- `re` → Regex for price cleaning  
+- `urllib3` → Retry mechanism for robust API requests
+
+Install dependencies:
+```bash
+pip install requests pandas beautifulsoup4 tqdm
+
+
+1️⃣ Scraping Books and Fetching UPC & ISBN
+
+Modules Used: requests, BeautifulSoup, difflib, re, pandas
+
+Workflow:
+
+Scrape Book List:
+
+Loops through catalogue pages (PAGES = 50) from books.toscrape.com.
+
+Extracts Title, Price, and Product URL.
+
+Fetch UPC (Universal Product Code):
+
+For each book’s product page, scrapes the UPC from the product details table.
+
+Fetch ISBN (Google Books API):
+
+Queries Google Books API with the book title.
+
+Uses SequenceMatcher to find the most similar title.
+
+Extracts ISBN-13 if similarity exceeds CONFIDENCE_THRESHOLD (0.65).
+
+Data Storage:
+
+Saves Title, Price, UPC, ISBN_13, Confidence Score, and a potential BooksRun URL in a CSV (books_with_upc_isbn_booksrun.csv).
+
+2️⃣ Fetching Competitor Price from BooksRun
+
+Modules Used: requests, urllib3 Retry, pandas
+
+Workflow:
+
+Session with Retry:
+
+Handles intermittent API errors using Retry (status 429, 500, 502, etc.).
+
+Avoids script breakage during temporary failures.
+
+Clean ISBN:
+
+Removes extra characters, decimals, and non-digit characters.
+
+Get BooksRun Price:
+
+Hits https://booksrun.com/api/v3/price/buy/{ISBN}.
+
+Extracts New and Used prices from:
+
+BooksRun direct offers
+
+Marketplace offers
+
+Returns minimum price among all available offers.
+
+3️⃣ Pricing Logic
+
+Adjust Price Based on Competitor:
+
+DECREASE_FACTOR = 0.95
+INCREASE_FACTOR = 1.05
+
+
+If your price > competitor → reduce price by 5%.
+
+If your price < competitor → increase price by 5%.
+
+If equal → keep the same.
+
+Price Status Categories:
+
+overpriced → your price > competitor
+
+underpriced → your price < competitor
+
+matched → same as competitor
+
+no_competitor → no competitor price found
+
+4️⃣ Main Process
+
+Reads books_with_upc_isbn_booksrun.csv.
+
+Iterates over each book:
+
+Cleans ISBN
+
+Fetches competitor price
+
+Computes recommended price
+
+Tracks price status
+
+Saves output to books_pricing.csv.
+
+Prints a summary of books processed, overpriced, underpriced, matched, and total competitor prices found.
+
+5️⃣ Features Summary
+
+ Scrapes real-time book data with UPC
+ Fetches ISBN using Google Books API
+ Retrieves competitor pricing from BooksRun
+ Calculates recommended pricing adjustments
+ Handles retries and network errors
+ Saves clean, structured output CSV
+ Provides clear status & summary
 
 
