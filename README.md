@@ -1013,7 +1013,7 @@ Predictable margin estimation
 
 The script generates a CSV file:
 
-booksrun_price_comparison.csv
+booksrun_price_comparison.csv which has upladed in output fold
 
 ##  Sample Columns
 Column             	Description
