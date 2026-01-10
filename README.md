@@ -839,147 +839,248 @@ df["high_demand"] = df["final_demand_score"] >= df["final_demand_score"].quantil
 
 **Milestone 4 - cross platform Integration and Notification Deployment system **
 
-## Project Overview
-This project aims to **analyze e-commerce book pricing in real-time**. It scrapes book data, fetches unique identifiers (UPC & ISBN), retrieves competitor pricing from BooksRun, and recommends adjusted pricing strategies. 
+📌 Introduction
 
-This milestone demonstrates a **data-driven pricing strategy** system that can be used by e-commerce platforms to remain competitive.
+In competitive online book marketplaces, manual price tracking is inefficient and error-prone. Prices change frequently, and delayed decisions can lead to revenue loss.
 
----
+This project provides a fully automated system that:
 
-## Features Implemented
-- **Scrape Book Details:** Fetches title, price, and product URL from [Books to Scrape](https://books.toscrape.com).
-- **Fetch UPC:** Scrapes UPC from the product page.
-- **Fetch ISBN:** Uses Google Books API to match titles and extract ISBN-13 with confidence scoring.
-- **Retrieve Competitor Price:** Fetches minimum new/used price from BooksRun API using ISBN.
-- **Pricing Recommendation:** Calculates suggested price based on competitor price:
-  - Overpriced → reduce by 5%
-  - Underpriced → increase by 5%
-  - Matched → no change
-- **CSV Output:** Saves enriched book data with competitor price, adjusted price, and status.
-- **Robust Error Handling:** Uses retries and timeouts for API requests.
+Collects book pricing data from multiple sources
 
----
+Matches books accurately using ISBN-13
 
-## Dependencies
-- `requests` → API calls  
-- `pandas` → Data manipulation and CSV handling  
-- `beautifulsoup4` → HTML parsing  
-- `tqdm` → Progress bars (optional)  
-- `difflib` → Title similarity scoring  
-- `re` → Regex for price cleaning  
-- `urllib3` → Retry mechanism for robust API requests
+Analyzes competitor prices
 
-Install dependencies:
-```bash
-pip install requests pandas beautifulsoup4 tqdm
+Suggests an optimized selling price using a defined pricing strategy
+
+The system outputs structured data in CSV format for further business analysis.
+
+🎯 Project Objectives
+
+Automate book price collection from multiple platforms
+
+Ensure accurate book matching using ISBN-13 and title similarity
+
+Analyze competitor pricing in real time
+
+Recommend competitive, profit-oriented pricing
+
+Reduce manual effort and pricing decision lag
+
+🔍 Data Sources Used
+1️⃣ BooksToScrape
+
+Source of our store’s book prices
+
+Used for scraping:
+
+Book title
+
+Retail price
+
+2️⃣ Google Books API
+
+Used to:
+
+Validate book identity
+
+Fetch ISBN-13 numbers
+
+Ensures accurate competitor matching
+
+3️⃣ BooksRun API
+
+Used to retrieve competitor prices:
+
+New books
+
+Used books
+
+Rental prices
+
+Marketplace used prices
+
+🧠 System Architecture
+BooksToScrape
+     ↓
+(Book Title + Our Price)
+     ↓
+Google Books API
+     ↓
+(ISBN-13 Matching)
+     ↓
+BooksRun API
+     ↓
+(Competitor Prices)
+     ↓
+Pricing Strategy Engine
+     ↓
+CSV Output
+
+🛠️ Technology Stack
+
+Python 3
+
+Requests – API calls
+
+BeautifulSoup – Web scraping
+
+Pandas – Data processing & CSV export
+
+Difflib (SequenceMatcher) – Title similarity matching
+
+REST APIs – Google Books & BooksRun
+
+⚙️ Configuration Parameters
+Parameter	Description
+TOTAL_PAGES	Number of pages scraped from BooksToScrape
+SIMILARITY_THRESHOLD	Title matching accuracy (default: 0.7)
+SLEEP_TIME	Delay between requests (API safety)
+BOOKSRUN_API_KEY	BooksRun API authentication key
+OUTPUT_FILE	Name of generated CSV file
+🧩 Core Logic Explanation
+1️⃣ Scraping Our Prices
+
+Scrapes multiple pages from BooksToScrape
+
+Extracts:
+
+Book title
+
+Price (cleaned to float format)
+
+our_price = clean_price(price_text)
+
+2️⃣ Title Cleaning & Matching
+
+To avoid incorrect matches:
+
+Titles are cleaned (lowercase, symbols removed)
+
+Compared using SequenceMatcher
+
+Only titles with similarity ≥ 0.7 are accepted
+
+similarity(a, b) >= SIMILARITY_THRESHOLD
+
+3️⃣ ISBN-13 Extraction
+
+Google Books API returns multiple identifiers
+
+Only ISBN-13 is used for competitor lookup
+
+Ensures consistent and accurate pricing data
+
+4️⃣ Competitor Price Selection
+
+BooksRun API may return multiple prices:
+
+New
+
+Used
+
+Rental
+
+Marketplace used
+
+The lowest valid competitor price is selected:
+
+competitor_price = min(valid_prices)
+
+📊 Market-Adjusted Pricing Strategy
+Strategy Rules
+
+If competitor price > our price
+→ Increase price, but still undercut competitor by 5%
+
+If competitor price ≤ our price
+→ Reduce price by 5% to stay competitive
+
+Formula
+adjusted_price = competitor_price × (1 − 0.05)
+profit = adjusted_price − our_price
 
 
-1️⃣ Scraping Books and Fetching UPC & ISBN
+This ensures:
 
-Modules Used: requests, BeautifulSoup, difflib, re, pandas
+Competitive pricing
 
-Workflow:
+Higher chance of sales
 
-Scrape Book List:
+Predictable margin estimation
 
-Loops through catalogue pages (PAGES = 50) from books.toscrape.com.
+📁 Output Structure
 
-Extracts Title, Price, and Product URL.
+The script generates a CSV file:
 
-Fetch UPC (Universal Product Code):
+booksrun_price_comparison.csv
 
-For each book’s product page, scrapes the UPC from the product details table.
+##  Sample Columns
+Column             	Description
+title             	Book title
+isbn13	            ISBN-13 identifier
+our_price	         Original store price
+competitor_price  	Lowest competitor price
+used_price	         Used book price
+new_price	         New book price
+rental_price       	Rental price
+marketplace_price 	Marketplace used price
+pricing_action	      Increase / Reduce
+adjusted_price	      Recommended price
+profit            	Expected profit
 
-Fetch ISBN (Google Books API):
+▶️ How to Run
+1️⃣ Install Dependencies
+pip install requests pandas beautifulsoup4
 
-Queries Google Books API with the book title.
+2️⃣ Execute Script
+python main.py
 
-Uses SequenceMatcher to find the most similar title.
+3️⃣ View Results
 
-Extracts ISBN-13 if similarity exceeds CONFIDENCE_THRESHOLD (0.65).
+Open:
 
-Data Storage:
+booksrun_price_comparison.csv
 
-Saves Title, Price, UPC, ISBN_13, Confidence Score, and a potential BooksRun URL in a CSV (books_with_upc_isbn_booksrun.csv).
+📈 Business Use Cases
 
-2️⃣ Fetching Competitor Price from BooksRun
+E-commerce price optimization
 
-Modules Used: requests, urllib3 Retry, pandas
+Automated competitor analysis
 
-Workflow:
+Retail pricing intelligence
 
-Session with Retry:
+Academic / final-year project
 
-Handles intermittent API errors using Retry (status 429, 500, 502, etc.).
+Resume-ready data engineering project
 
-Avoids script breakage during temporary failures.
+🚀 Future Enhancements
 
-Clean ISBN:
+Dynamic pricing based on demand & sales history
 
-Removes extra characters, decimals, and non-digit characters.
+Multiple competitor integration
 
-Get BooksRun Price:
+Machine learning price prediction
 
-Hits https://booksrun.com/api/v3/price/buy/{ISBN}.
+Web dashboard visualization
 
-Extracts New and Used prices from:
+Real-time price alerts
 
-BooksRun direct offers
+⚠️ Notes
 
-Marketplace offers
+Uses rate limiting to avoid API blocking
 
-Returns minimum price among all available offers.
+Prevents duplicate ISBN processing
 
-3️⃣ Pricing Logic
-
-Adjust Price Based on Competitor:
-
-DECREASE_FACTOR = 0.95
-INCREASE_FACTOR = 1.05
+Designed for scalability and modular expansion
 
 
-If your price > competitor → reduce price by 5%.
 
-If your price < competitor → increase price by 5%.
 
-If equal → keep the same.
 
-Price Status Categories:
 
-overpriced → your price > competitor
 
-underpriced → your price < competitor
 
-matched → same as competitor
 
-no_competitor → no competitor price found
-
-4️⃣ Main Process
-
-Reads books_with_upc_isbn_booksrun.csv.
-
-Iterates over each book:
-
-Cleans ISBN
-
-Fetches competitor price
-
-Computes recommended price
-
-Tracks price status
-
-Saves output to books_pricing.csv.
-
-Prints a summary of books processed, overpriced, underpriced, matched, and total competitor prices found.
-
-5️⃣ Features Summary
-
- Scrapes real-time book data with UPC
- Fetches ISBN using Google Books API
- Retrieves competitor pricing from BooksRun
- Calculates recommended pricing adjustments
- Handles retries and network errors
- Saves clean, structured output CSV
- Provides clear status & summary
 
 
